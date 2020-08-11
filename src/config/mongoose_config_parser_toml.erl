@@ -350,8 +350,9 @@ connection_options(ldap, Options) ->
     [ldap_option(K, V) || {K, V} <- maps:to_list(Options)];
 connection_options(riak, Options = #{<<"username">> := UserName,
                                      <<"password">> := Password}) ->
+    M = maps:without([<<"username">>, <<"password">>], Options),
     [{credentials, b2l(UserName), b2l(Password)} |
-     [riak_option(K, V) || {K, V} <- maps:to_list(Options)]];
+     [riak_option(K, V) || {K, V} <- maps:to_list(M)]];
 connection_options(cassandra, Options) ->
     [cassandra_option(K, V) || {K, V} <- maps:to_list(Options)];
 connection_options(elastic, Options) ->
